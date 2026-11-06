@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "ashura-skills",
+  "metadata": {
+    "description": "Ashura: mini Sonny Boy, a local-only multi-agent dev team orchestrator for Claude Code."
+  },
+  "owner": {
+    "name": "Phurit Warapattanapong"
+  },
+  "plugins": [
+    {
+      "name": "ashura",
+      "description": "Head-of-team orchestrator with worktrees per subtask; hands verified local branches to you to merge.",
+      "source": "./",
+      "category": "development"
+    }
+  ]
+}

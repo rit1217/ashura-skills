@@ -1,0 +1,8 @@
+{
+  "name": "ashura",
+  "version": "0.1.0",
+  "description": "Mini Sonny Boy: splits requirements into subtasks, runs a planner/tester/coder/reviewer pipeline per subtask in its own git worktree, builds tests first, verifies, and hands each verified local branch to you to merge. No GitHub CLI, no Playwright.",
+  "author": { "name": "Phurit Warapattanapong" },
+  "license": "MIT",
+  "dependencies": ["caveman@caveman", "mattpocock-skills@claude-plugins-official"]
+}
