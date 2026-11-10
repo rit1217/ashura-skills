@@ -54,7 +54,9 @@ Delivery is a verified local branch. The user merges it.
 3. Ignore Ashura dirs locally without touching tracked files: append `.claude/ashura/` and
    `.claude/worktrees/` to `<top>/.git/info/exclude` if missing. (For a worktree checkout, use
    `git rev-parse --git-common-dir` to find the real `info/exclude`.)
-4. Create `run_dir`. Write `state.md` + `decisions.tsv` header from templates.
+4. Create `run_dir`. Write `state.md` + `decisions.tsv` header from templates. Record the user's
+   requirements under `## Requirements` as R1..Rn: one per item the user listed (a single
+   paragraph = R1), each with a ≤6-word title and the user's text verbatim. Never reword them.
 5. Probe and record in `state.md` → `## Environment` (one line each):
    - OS: `uname -s` (`Darwin` / `Linux` (+ `microsoft` in `uname -r` = WSL) / `MINGW*|MSYS*` =
      Windows Git Bash).
@@ -75,14 +77,16 @@ Delivery is a verified local branch. The user merges it.
    - The user named the area, or ≤3 Grep/Glob calls find it: one module or one directory.
    - No product decision is needed to split it.
    Shortcut → write `<run_dir>/subtasks.md` with one T1: goal = requirement verbatim, done
-   evidence = `none — planner defines`, file boundary = that area's glob, depends_on none. Log
+   evidence = `none — planner defines`, file boundary = that area's glob, depends_on none,
+   requirements R1. Log
    the decision with why. Show the 1-row table → step 4 gate (Revise → run the decomposer).
    Approved → Phase 2.
-2. Spawn `ashura:decomposer` (foreground) with: requirements verbatim, your 2 lines, `run_dir`,
-   path of `state.md`.
+2. Spawn `ashura:decomposer` (foreground) with: requirements R1..Rn verbatim with their ids, your
+   2 lines, `run_dir`, path of `state.md`.
 3. `STATUS: QUESTIONS` → question relay with header prefix `Ashura`; answers to `<run_dir>/qa.md`;
    spawn a fresh `ashura:decomposer` with `qa_log` = that file.
-4. `STATUS: SUBTASKS` → show its table + dependency graph (one line per edge) → AskUserQuestion:
+4. `STATUS: SUBTASKS` → check every R has ≥1 subtask (gap → fresh decomposer with the gap) → show
+   its table + dependency graph (one line per edge) → AskUserQuestion:
    Approve (Recommended) / Revise (Other text goes to a fresh decomposer). Log decision.
 5. One subtask only → still use a worktree: the user's checkout stays untouched until they merge.
 
@@ -112,11 +116,20 @@ On each lead notification, read only its STATUS block and branch:
 After each event: update `state.md` + `decisions.tsv`; launch newly-ready subtasks; post the status
 board only when a tracked field changed.
 
+## Status board (progress report)
+Every progress report uses the Status board template: grouped by requirement, never a flat subtask
+list. Per requirement: a progress line + a 1-line summary of what has landed and what is left,
+then a checklist of its subtasks. `[x]` = VERIFIED, HANDED_OFF or MERGED. `[-]` = dropped.
+`[ ]` = anything else, with its phase and what it waits on. A subtask serving several requirements
+appears under each. Requirement state: `done` = all its subtasks MERGED; `ready to merge` = all
+`[x]`; else `in progress` / `blocked` / `not started`. End with one overall line.
+
 ## Add (new requirement into an open run)
 1. Target = the open run (`phase` running or paused). Several → AskUserQuestion which (max 3). None
    → treat the text as requirements for a new run. Skip Phase 0; the run is set up.
-2. Append `added: <requirement verbatim>` under `## Goal` in `state.md`. Log to `decisions.tsv`.
-3. Spawn `ashura:decomposer` in the background with: the requirement verbatim, your 2 lines for
+2. Append `added: <requirement verbatim>` under `## Goal` and a new `R<k>` (next id, title +
+   verbatim text) under `## Requirements` in `state.md`. Log to `decisions.tsv`.
+3. Spawn `ashura:decomposer` in the background with: `R<k>` + the requirement verbatim, your 2 lines for
    it, `run_dir`, `state`, `existing` = `<run_dir>/subtasks.md`. Keep supervising leads meanwhile.
 4. `QUESTIONS` → question relay (header prefix `Ashura`), answers to `<run_dir>/qa.md`, fresh
    background decomposer with the same inputs + `qa_log`.
@@ -187,8 +200,8 @@ if that command exists else `graphify update .` if a graph exists, plus house ru
 branch level. Show `git diff --stat` → ask to commit → commit with house-rule attribution. Never push.
 
 ## Phase 5 — Close
-Report (one compact block): landed vs goal, each subtask (branch, merged yes/no), dropped + why,
-decisions still waiting. Offer worktree cleanup listing exact paths → on yes `git worktree remove
+Report: the final Status board (per requirement: landed vs asked, subtask checklist with branch
+and merged yes/no), dropped + why, decisions still waiting. Offer worktree cleanup listing exact paths → on yes `git worktree remove
 "<wt>"` each (branches kept). Set `phase: closed`.
 
 ## Pause / resume

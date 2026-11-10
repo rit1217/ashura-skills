@@ -11,6 +11,9 @@ top: <abs path>
 ## Goal
 <2 lines: goal restated; smallest change>
 
+## Requirements
+- R1 <≤6-word title>: <user's text verbatim>
+
 ## Environment
 os: <Darwin | Linux | WSL | Windows-GitBash>
 python: <abs path>
@@ -22,8 +25,8 @@ document-update: yes | no
 - <rule copied from CLAUDE.md / memory>
 
 ## Subtasks
-| T | title | branch | base | wt | lead id | status |
-|---|---|---|---|---|---|---|
+| T | title | R | branch | base | wt | lead id | status |
+|---|---|---|---|---|---|---|---|
 
 ## Queue
 <subtasks waiting for a lead slot or a parent>
@@ -67,10 +70,20 @@ Return only your STATUS block (first line STATUS: <TOKEN>, ≤15 lines; QUESTION
 
 ## Status board
 ```
-| T | title | phase | status | waiting on |
-|---|---|---|---|---|
+**R1 <title>** — in progress · 1/3 subtasks done
+<1 line: what has landed so far, what is left for this requirement>
+- [x] T1 <title> — merged
+- [ ] T2 <title> — review · waiting on reviewer
+- [ ] T3 <title> — queued · waiting on T2
+
+**R2 <title>** — ready to merge · 2/2 subtasks done
+<1 line summary>
+- [x] T4 <title> — handed off · branch ashura/<run>/T4-<slug>
+- [x] T5 <title> — verified
+
+Overall: 0/2 requirements done · 3/5 subtasks done · 1 question queued
 ```
-Phase ∈ plan, red, green, verify, review, verified, handed off, merged, paused, failed.
+Phase ∈ plan, red, green, verify, review, verified, handed off, merged, paused, failed, dropped.
 
 ## PR body (written by verifier to `<task_dir>/pr-body.md`, for the user to paste)
 ```markdown
