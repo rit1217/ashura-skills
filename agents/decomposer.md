@@ -63,7 +63,7 @@ or
 STATUS: QUESTIONS
 Q1
 title: <≤6 words>
-context: <1–2 lines>
+context: <2–5 lines: what is being decided, why it matters, what the code shows (path:line)>
 question: <one question>
 options:
 - <label ≤5 words> (Recommended) — <one-line consequence>

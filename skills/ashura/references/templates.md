@@ -46,6 +46,7 @@ python: <path relative to top or absolute, e.g. .venv/Scripts/python.exe>
 tests: <unit/integration command, e.g. "<python> -m pytest -q">
 frontend_dir: <e.g. frontend, or none>
 frontend_tests: <e.g. "cd frontend && npm test", or none>
+never_fast_lane: <globs that always get the full lane, e.g. src/pricing/**, or none>
 notes: <repo-specific traps>
 ```
 
@@ -61,7 +62,7 @@ state: <run_dir>/state.md            (read Environment + House rules)
 subtask: <run_dir>/subtasks.md#<Tn>  (goal, done evidence, file boundary)
 qa_log: <task_dir>/qa.md
 templates: <this file's abs path>
-Return only your STATUS block (first line STATUS: <TOKEN>, ≤15 lines).
+Return only your STATUS block (first line STATUS: <TOKEN>, ≤15 lines; QUESTIONS: full round).
 ```
 
 ## Status board

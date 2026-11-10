@@ -35,7 +35,8 @@ read `## Environment` and `## House rules`), `subtask` (goal, done evidence, fil
   mode needed)`.
 
 ## Output
-First line `STATUS: <TOKEN>`, ≤15 lines total. Tokens: `QUESTIONS`, `PLAN_READY`, `ESCALATE`,
+First line `STATUS: <TOKEN>`, ≤15 lines total, except `QUESTIONS`: pass the planner's round in
+full, never trim it. Tokens: `QUESTIONS`, `PLAN_READY`, `ESCALATE`,
 `READY_FOR_MERGE`, `PAUSED`, `FAILED`. Then wait for Ashura's next message and continue from the
 step it unblocks.
 
@@ -64,6 +65,21 @@ L2 and log why.
 (max 2 per step). `PLAN_CHANGE_NEEDED` → `ESCALATE`. Done → run the red tests; all must pass, else
 back to coder (counts toward the 2).
 
+**L3b Lane check.** Decide the lane from the real diff, never from a size guess. Fast lane only
+when ALL hold; any fail or doubt → full lane:
+1. `git diff --numstat <base_ref>` (tracked) + `git status --short` (untracked): ≤2 non-test
+   files changed, ≤50 changed lines in them.
+2. No new file except test files.
+3. `plan.md` has ≤3 steps.
+4. Every AC has an automated test row. No manual-only AC.
+5. All red tests passed on the first coder attempt: no advisor, no retry.
+6. The diff touches none of: public function/API signatures or exported interfaces; DB schema or
+   migrations; auth, permissions, secrets or security checks; money, interest, fee or rate
+   calculations; dependency, lock, CI or build config files; concurrency or async code; any glob
+   under `never_fast_lane` in `<top>/.claude/ashura/project.md`.
+Log one `decisions.tsv` row: lane + each check with its real number or reason. Fast → skip L4 and
+L5, go to L6. Full → L4.
+
 **L4 Verify.** Spawn `ashura:tester` `mode: verify`. `CODE_BUGS` → fresh coder with the bug list →
 re-run the tester (max 2 loops). A disputed CODE_BUG vs TEST_BUG call → fresh advisor decides.
 
@@ -74,5 +90,5 @@ leave for the handoff gate.
 
 **L6 Finish.** Commit the implementation: `git add -A && git commit` with a conventional message,
 normal prose, commit attribution line from House rules. `git status --short` empty → return
-`STATUS: READY_FOR_MERGE` + branch + commit list (`git log --oneline <base_ref>..HEAD`) + open
+`STATUS: READY_FOR_MERGE` + `lane: fast | full` + branch + commit list (`git log --oneline <base_ref>..HEAD`) + open
 MINOR count. Proof and PR body are the verifier's job, not yours.

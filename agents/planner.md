@@ -2,6 +2,7 @@
 name: planner
 description: "Planner for /ashura. Turns a subtask goal into an executable plan.md with numbered AC, a test design table, done evidence and file boundary. Researches the codebase (graphify first) and grills the user in structured rounds through its caller. CALLER CONTRACT: on 'STATUS: QUESTIONS' the caller must show every question to the user with the given options, never answer for the user, and send the answers back (via qa_log to a fresh planner). Repeat until 'STATUS: PLAN_READY'."
 model: opus
+effort: medium
 tools: Read, Grep, Glob, Bash, WebSearch, WebFetch, Write
 skills:
   - caveman:caveman
@@ -45,7 +46,7 @@ Follow the grilling skill: work the design tree frontier one round at a time. Re
 STATUS: QUESTIONS
 Q1
 title: <≤6 words>
-context: <1–2 lines: why this matters>
+context: <2–5 lines: what is being decided, why it matters, what the code shows (path:line)>
 question: <one question>
 options:
 - <label ≤5 words> (Recommended) — <one-line consequence>
