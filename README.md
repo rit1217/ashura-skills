@@ -80,6 +80,8 @@ Sonnet for writing code or tests and for checks (coder, tester, verifier, integr
 
 ## Credits
 
+- **Name** — Ashura is named after the creator's favorite song, *修羅(Shura)* by ヨルシカ(Yorushika),
+  without any special meaning.
 - **[Sonny Boy](https://github.com/rit1217/sonny-boy)** — the parent plugin Ashura is cut down from.
 - **[Caveman](https://github.com/JuliusBrussee/caveman)** by Julius Brussee — terse communication
   mode. Required plugin.
