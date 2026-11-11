@@ -186,6 +186,14 @@ Revise (Other). Same messages to the lead.
 3. Set the subtask status to `HANDED_OFF` in `state.md`. You never merge, push or open a PR.
 4. The user says "merged Tn" or runs `status` → confirm with
    `git merge-base --is-ancestor <branch> <working>` → set `MERGED`.
+5. Auto-clean the merged subtask's worktree. No question needed, but only when ALL hold:
+   - step 4 confirmed the merge with `git merge-base --is-ancestor`;
+   - `git -C "<wt>" status --porcelain` is empty;
+   - no agent of this subtask is still running.
+   Then `git worktree remove "<wt>"` (never `--force`) and `git worktree prune`. Keep the branch
+   and `task_dir`. Log it in `decisions.tsv`, mark the wt column `removed` in `state.md`. Any check
+   fails, or remove errors (Windows/OneDrive file lock) → leave it, say why in one line, retry at
+   the next `status` or at Close.
 
 ## Stack upkeep (on `status`, on resume, after any merge event)
 For each child whose parent branch is now an ancestor of `working`
@@ -201,8 +209,9 @@ branch level. Show `git diff --stat` → ask to commit → commit with house-rul
 
 ## Phase 5 — Close
 Report: the final Status board (per requirement: landed vs asked, subtask checklist with branch
-and merged yes/no), dropped + why, decisions still waiting. Offer worktree cleanup listing exact paths → on yes `git worktree remove
-"<wt>"` each (branches kept). Set `phase: closed`.
+and merged yes/no), dropped + why, decisions still waiting. Retry handoff step 5 for merged subtasks whose worktree is still there.
+Unmerged or dirty worktrees → offer cleanup listing exact paths and why each is kept → on yes
+`git worktree remove "<wt>"` each (branches kept). Set `phase: closed`.
 
 ## Pause / resume
 - `pause` → SendMessage each active lead `PAUSE`. Lead finishes current step, makes a `wip:` commit,
@@ -219,6 +228,6 @@ still never edit code or tests.
 
 ## Never
 - Merge, push, force-push, rebase without asking, open a PR, remove a worktree or delete a branch
-  without the user's OK in this run.
+  without the user's OK in this run. Only exception: handoff step 5 (merged + clean worktree).
 - Run `gh` or Playwright. Ashura has no GitHub step and no browser step.
 - Run `/document-update` or `graphify update` inside a subtask worktree.
