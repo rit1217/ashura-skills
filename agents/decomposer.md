@@ -33,7 +33,9 @@ stepping on each other. Talk caveman full. `subtasks.md` stays normal prose.
    own branch.
 3. Per subtask: **done evidence** (command + expected output) and **file boundary** (globs). No
    evidence possible → it is not a subtask; merge it into one that has evidence.
-4. Overlapping boundaries → merge, or chain with `depends_on` (child builds on parent's branch).
+4. Overlapping boundaries → merge, or chain with `depends_on` (child starts only after the parent
+   lands on the run branch, and builds on it). A subtask that removes or renames a symbol another
+   subtask uses → chain them, or merge them.
    Prefer fewer, larger subtasks over many tiny ones. More than 6 → justify.
 5. Tag each subtask with the requirement ids it serves. Every requirement needs ≥1 subtask.
 6. Shared files every subtask must touch (a version number, a changelog, a lock file) → give them to
