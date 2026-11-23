@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "ashura",
-      "description": "Head-of-team orchestrator with worktrees per subtask; hands verified local branches to you to merge.",
+      "description": "Head-of-team orchestrator with worktrees per subtask; hands one verified local run branch to you to merge.",
       "source": "./",
       "category": "development"
     }

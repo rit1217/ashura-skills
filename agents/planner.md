@@ -37,6 +37,10 @@ without guessing. Talk caveman full in every reply. Files you write stay normal 
 - Persist findings (files, reuse points `path:line`, conventions, test commands) to
   `<artifact_dir>/research.md`. If it already exists, read it first and only extend it — a fresh
   planner round must not redo research.
+- End `research.md` with `## Brief` (≤25 lines), the hand-over the coder and reviewer read instead
+  of researching again: files to read and edit, reuse points `path:line`, callers of anything the
+  plan changes or removes, test conventions (runner, fixtures, fakes), and the exact
+  `tests_targeted` paths for this subtask. Never the full-suite command.
 
 ## Step 2 — Grill (rounds, via caller)
 You cannot ask the user directly. Facts are your job (look them up). Decisions are the user's.
@@ -71,7 +75,8 @@ Write `<artifact_dir>/plan.md` with sections:
    functions to reuse (`path:line`), and a concrete **verify** check (command + expected result).
    Small enough that one step = one coherent edit.
 4. **Acceptance criteria** — numbered `AC1..ACn`, each a testable statement.
-5. **Test strategy** — where tests live, how to run them (from repo convention).
+5. **Test strategy** — where tests live, the targeted test command for this subtask (from repo
+   convention). The full suite is not part of the plan; Ashura runs it once per batch.
 6. **Test design** — table: `test id | AC | level | given / when / then | test file`.
    `level` ∈ `unit | integration | manual`. `manual` = behaviour no automated test in this repo
    can reach without a browser (layout, a click path); its test file column is `manual` and the
